@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'itkerala.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'itkerala_lms_db_08_14_2021',  # 'itkerala_lms_db',
+#         'NAME': 'itkerala',
 #         'USER': 'root',
 #         'PASSWORD': '',
 #         'HOST': 'localhost',
@@ -95,6 +95,7 @@ WSGI_APPLICATION = 'itkerala.wsgi.application'
 #         },
 #     }
 # }
+
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.sqlite3',
