@@ -82,25 +82,25 @@ WSGI_APPLICATION = 'itkerala.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'itkerala_lms_db_08_14_2021',  # 'itkerala_lms_db',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-}
 # DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': 'db.sqlite3',
-#    }
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'itkerala_lms_db_08_14_2021',  # 'itkerala_lms_db',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
 # }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': 'db.sqlite3',
+   }
+}
 
 # CSRF_FAILURE_VIEW='accounts.views.error_403'
 # Password validation
