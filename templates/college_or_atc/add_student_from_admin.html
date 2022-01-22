@@ -1,0 +1,30 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    {% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for msg in messages %}
+            <p>{{msg}}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+            {{student_form.as_p}}
+            <select class="form-select " name="course" aria-label="Default select example">
+                <option selected>Select Course</option>
+                {% for course in courses %}
+                    <option value="{{course.slug}}">{{course.course_name}}</option>
+                {% endfor %}
+            </select>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center my-4">
+                <input type="submit" value="Add Student" class="btn btn-info text-white" style="background-color: #f6944d; border-color: #f6944d; width:fit-content;" />
+        </div>
+    </form>
+</div>
+
+{% endblock wrapper %}

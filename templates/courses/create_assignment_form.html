@@ -1,0 +1,32 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+  
+{% block wrapper %}
+
+<div class="container">
+  <h1>Assignment</h1>
+
+  {% if user.user_type == 2 %}
+    <form method="POST" action="{% url 'courses:create_assignment' %}">
+      {% csrf_token %} 
+      {{ form.assignment_name.label }}
+      {{ form.assignment_name }}<br>
+      {{ form.assignment_description.label }}
+      {{ form.assignment_description }}<br>
+      {{ form.due_date.label }}
+      {{ form.due_date }}<br>
+      {{ form.course.label }}
+      {{ form.course }}<br>
+      {{ form.name.errors }}
+      <input type="submit" value="Submit" class="btn btn-success btn-lg">
+    </form>
+    
+    
+    {% else %}
+        <div class="jumbotron">
+            <h2>You cannot create an assignment</h2>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock wrapper %}

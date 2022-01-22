@@ -1,0 +1,37 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+          {% if request.user.user_type == 5 %}
+            <table class="table table-striped">
+                <tr>
+                  <th>Sl. No.</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Contact Number</th>
+                  <th>Message</th>
+                </tr>
+                {% for contact in contacts %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{contact.name}}</td>
+                    <td>{{contact.email}}</td>
+                    <td>{{contact.contact_number}}</td>
+                    <td>{{contact.message}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+              <p class="text-center">
+                You are not allowed to visit.
+              </p>
+            </div>
+          {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

@@ -1,0 +1,51 @@
+<div class="d-flex flex-column px-3 pt-2 min-vh-sm-100" style="background-color: rgb(240, 240, 240);">
+  <div class="d-none d-md-flex justify-content-center">
+    <div class="d-flex flex-column">
+      <img src="{{user.profile.profile_pic.url}}" alt="Profile Picture" width="120" height="120" class="rounded-circle" />
+      <p class="text-center mt-2">
+        <strong>{{user.name}}</strong>
+      </p>
+    </div>
+
+    <hr />
+  </div>
+
+  <ul class="nav nav-pills flex-column" id="menu">
+    <li class="nav-item">
+      <a href="{% url 'accounts:view_profile' %}" class="nav-link {% if request.resolver_match.url_name == 'view_profile' %}active{% endif %} {% if request.user.user_type == 1 %}{% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}"> <i class="fs-3 bi-house"></i><span class="ms-1 d-sm-none d-md-inline"> Profile</span> </a>
+    </li>
+    {% if request.user.user_type == 1 or request.user.user_type == 2 or request.user.user_type == 5 %}
+    <li class="nav-item">
+      <a href="{% url 'courses:enrolled_courses' %}" class="nav-link {% if request.resolver_match.url_name == 'enrolled_courses' %}active{% endif %} {% if request.user.user_type == 1 %}{% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}"><i class="fs-3 bi-book"></i><span class="ms-1 d-sm-none d-md-inline"> Enrolled Courses</span></a>
+    </li>
+    {% endif %}
+    {% comment %}
+    {% if request.user.user_type == 3 %}
+    <li class="nav-item">
+      <a href="{% url 'study_center:create_study_center' %}" class="nav-link {% if request.resolver_match.url_name == 'create_study_center' %}active{% endif %}"><i class="fs-3 bi-book"></i><span class="ms-1 d-sm-none d-md-inline"> Institute</span></a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'study_center:add_students' %}" class="nav-link {% if request.resolver_match.url_name == 'add_students' %}active{% endif %}"><i class="fs-3 bi-book"></i><span class="ms-1 d-sm-none d-md-inline"> Add Student</span></a>
+    </li>
+    {% endif %}
+    {% endcomment %}
+
+    {% if request.user.user_type == 1 %}
+    <li class="nav-item">
+      <a href="{% url 'accounts:profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %} {% if request.user.user_type == 1 %}{% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}"> <i class="fs-3 bi-box-arrow-in-up-left"></i><span class="ms-1 d-sm-none d-md-inline"> Update Profile</span></a>
+    </li>
+    {% endif %}
+
+    <li class="nav-item">
+      <a href="{% url 'accounts:change_password' %}" class="nav-link {% if request.resolver_match.url_name == 'change_password' %}active{% endif %} {% if request.user.user_type == 1 %}{% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}"> <i class="fs-3 bi-lock"></i><span class="ms-1 d-sm-none d-md-inline"> Change Password</span> </a>
+    </li>
+
+    {% comment %}
+    {% if request.user.user_type == 1 %}
+    <!-- <li class="nav-item">
+      <a href="{% url 'accounts:performance_analysis' %}" class="nav-link {% if request.resolver_match.url_name == 'performance_analysis' %}active{% endif %} {% if request.user.user_type == 1 %}{% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}"><i class="fs-3 bi-file-earmark-check"></i><span class="ms-1 d-sm-none d-md-inline"> Performance</span></a>
+    </li> -->
+    {% endif %}
+    {% endcomment %}
+  </ul>
+</div>

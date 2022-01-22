@@ -1,0 +1,8 @@
+INSTALLED_APPS = 'django_bootstrao_icons'
+{% load bootstrao_icons %}
+{% bs_icon 'house-door' size='1.5em' extra_classes='bi bi-house-door' %}
+{% bs_icon 'speedometer2' size='1.5em' extra_classes='bi bi-speedometer2' %}
+{% bs_icon 'table' size='1.5em' extra_classes='bi bi-table' %}
+{% bs_icon 'columns-gap' size='1.5em' extra_classes='bi bi-columns-gap' %}
+{% bs_icon 'person' size='1.5em' extra_classes='bi bi-person' %}
+{% bs_icon 'box-arrow-right' size='1.5em' extra_classes='bi bi-box-arrow-right' %}

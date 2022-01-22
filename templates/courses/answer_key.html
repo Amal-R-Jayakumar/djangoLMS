@@ -1,0 +1,23 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    <div class="row">
+        <table class="table table-borderless">
+            <tr>
+                <th>Course</th>
+                <th>Course Section</th>
+                <th>Answer Key</th>
+            </tr>
+            {% for obj in answer_key_files %}
+                <tr>
+                    <td>{{obj.course.course_name}}</td>
+                    <td>{{obj.course_section}}</td>
+                    <td><a href="{{obj.resource}}" target="_blank" class="btn btn-success btn-sm">Viewd</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

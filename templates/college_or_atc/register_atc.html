@@ -1,0 +1,79 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% load widget_tweaks %} {% include 'nav.html' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-2 col-md-4 col-xl-3 px-sm-2 px-0 text-dark">{% include 'accounts/sidebar.html' %}</div>
+    <div class="col-12 col-sm-10 col-md-8 col-xl-9 text-dark d-flex justify-content-center align-items-center">
+      <div class="card card-width border-0">
+
+        <div class="card-body" style="background-color: #fafbfb;" >
+            {% if request.user.user_type == 3 %}
+            {% if not study_center %}
+          <form action="" method="post">
+            {% csrf_token %}
+                {{form.as_p}}
+                <div class="d-flex justify-content-center mt-3">
+                    <input type="submit" value="Register Institute" class="btn btn-info text-white px-4" style="background-color: #f6944d; border-color: #f6944d"/>
+                    
+                </div>
+            </form>
+            {% else %}
+            {% comment %}
+            <div class="alert alert-warning" role="alert">
+              <p class="text-center">
+                You've already added your Institute.
+              </p>
+            </div>
+            {% endcomment %}
+<div class="card px-0">
+            <div class="card-header px-4 mx-0">
+              <p class="fs-4">{{study_center.get_institute_display}}</p>
+            </div>
+            <div class="card-body">
+                  <p>Institute</p>
+                  <hr style="width:5vw;">
+                  <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{study_center.name}}</p>
+                      <hr style="width:20vw;">
+                    </div></div>
+
+                    <p>Center Code</p>
+                    <hr style="width:5vw;">
+                    <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{study_center.code}}</p>
+                      <hr style="width:20vw;">
+                    </div></div>
+                    
+                    <p>Practicals are provided for:</p>
+                    <hr style="width:5vw;">
+                    <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">
+                        <p>Hardware: {% if study_center.hardware %}Yes{% else %}No{% endif %}</p>
+                        <p>Software: {% if study_center.software %}Yes{% else %}No{% endif %}</p>
+                        <p>Multimedia: {% if study_center.multimedia %}Yes{% else %}No{% endif %}</p>
+                      </p>
+                      <hr style="width:20vw;">
+                    </div></div>
+
+            </div>
+          </div>
+
+
+
+            
+            {% endif %}
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+                <p class="text-center">
+                    You are not allowed to add Institutes.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock wrapper %}

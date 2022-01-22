@@ -1,0 +1,73 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex pt-2 pb-0" href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=lesson.slug %}">
+      <h4><i class="bi bi-arrow-left pe-2"></i></h4>
+      <h4 class="ps-2">{{lesson.title}}</h4>
+    </a>
+  </div>
+</nav>
+<div class="container-fluid pt-0 pb-2 mx-0 px-0">
+    <div class="row">
+        <div class="col-sm-8 col-12 p-4 bg-light">
+            <div class="row ms-3">
+
+        {% if not already_submitted %}
+        <div class="alert alert-info" role="alert">
+          <p class="text-center mb-0">Only one submission is allowed per assignment for each student.</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0 text-center">{{error}}</p>
+        </div>
+        {% endif %}
+
+        <h4>Session: {{lesson.title}}</h4>
+        <h5>Assignment Topic: {{assignment.assignment_name}}</h5>
+        <p class="m-4">{{assignment.assignment_description}}</p>
+        {% if assignment.image %}
+        <img src="{{assignment.image.url}}" class="img-fluid my-4" alt="Assignment Hint" />
+        {% endif %}
+        {% if not already_submitted %}
+        <form class="d-flex" method="post" enctype="multipart/form-data">
+          {% csrf_token %} {{submission_form.assignment_file}}
+          <input type="submit" value="Upload" class="btn btn-success ms-3" />
+        </form>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+          <p class="text-center mb-0">You have already submitted the assignment. Only one submission is allowed per assignment for each student.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-sm-4 p-0">
+      <div class="accordion lesson p-0 bg-dark" id="accordionExample">
+        <div class="accordion-item border-0 p-0">
+          <h2 class="accordion-header p-0" id="heading{{session.session_number}}">
+            <button class="accordion-button text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{session.session_number}}" aria-expanded="true" aria-controls="collapse{{session.session_number}}" onclick="this.blur();">{{session.session}}</button>
+          </h2>
+          <div id="collapse{{session.session_number}}" class="accordion-collapse bg-secondary" aria-labelledby="heading{{session.session_number}}" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-secondary">
+                  <a class="text-white" href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=lesson.slug %}">
+                    <h5>{{lesson.title}}</h5>
+                  </a>
+                  <ol class="text-white">
+                    {% for each_assignment in lesson.assignment_set.all %}
+                    <li class="list-item ps-2"><a href="{% url 'courses:assignment_detail' course_slug=course.slug lesson_slug=lesson.slug id=each_assignment.id %}" class="text-white">{{each_assignment.assignment_name}}</a></li>
+                    {% endfor %}
+                  </ol>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock wrapper %}

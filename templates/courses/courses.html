@@ -1,0 +1,35 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+  <div class="row">
+    <div class="col d-flex">
+      {% for course in courses %}
+
+        <div class="course card m-2" style="width: 18rem">
+          <div class="card-image" style="height:180px;background-image:url({{course.course_image.url}});">
+          </div>
+          <div class="card-header">
+            <strong> {{course.course_name}} </strong>
+          </div>
+          <div class="card-body">
+            <p>{{course.course_description|truncatewords:10}}</p>
+          {% if request.user.user_type == 1 %}
+              <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-warning white-text">Curriculm</a>
+          {% elif  request.user.user_type == 5 %}
+            <a href="{% url 'student_report:enrollments' course.slug %}" class="btn btn-warning white-text p-2 m-2">Enrollments</a>
+            <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-warning white-text p-2 m-2">Curriculm</a>
+          {% else %}
+            <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-warning white-text">Curriculm</a>
+          {% endif %}
+          </div>
+          <div class="card-footer">
+            <p>Price: Rs. {{course.price}}</p>
+            <p>Duration: {{course.completion_time.days}} working days</p>
+            <p>Completion Time: 180 days</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock wrapper %}

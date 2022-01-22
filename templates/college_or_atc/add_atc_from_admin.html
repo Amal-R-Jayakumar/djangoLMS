@@ -1,0 +1,38 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+{% if request.resolver_match.url_name == 'edit_atc_details' %}
+<div class="container">
+    {%for message in messages %}
+        <p class="{{message.tags}}">{{message}}</p>
+    {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row d-flex justify-content-around mt-4">
+            <div class="col-md-8">
+            {{study_center_form.as_p}}
+            <div class="row d-flex justify-content-end">
+                <input type="submit" value="Update" class="btn btn-info text-white" style="background-color: #f6944d; border-color: #f6944d; width: 160px" />
+            </div>
+        </div>
+        </div>
+    </form>
+</div>
+{% else %}
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+            {{atc_user_form.as_p}}
+            {{atc_profile_form.as_p}}
+            </div>
+            <div class="col-md-6">
+            {{study_center_form.as_p}}
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <input type="submit" value="Add ATC and User" class="btn btn-info text-white" style="background-color: #f6944d; border-color: #f6944d" />
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock wrapper %}

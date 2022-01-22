@@ -1,0 +1,36 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container mt-3">
+{% if request.user.user_type == 4 or request.user.user_type == 5 %}
+<div class="row mt-3">
+    <div class="col-12">
+        <table class="table table-bordered">
+            <tr>
+                <th>Sl. No.</th>
+                <th>Institute</th>
+                <th>Institute Director</th>
+                <th>Institute Contact</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Fee Payment Status</th>
+                <th>Razorpay Order ID</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+              <td class="text-center">{{forloop.counter}}</td>
+              <td class="text-start">{{student.college.name}}</td>
+              <td class="text-start">{{student.college.admin_user.name}}</td>
+              <td class="text-start">{{student.college.admin_user.contact_number}}</td>
+              <td class="text-start">{{student.student.name}}</td>
+              <td class="text-end">{{student.course.course_name }}</td>
+              <td class="text-end">{% if student.fee_paid %} <span class="text-success">PAID</span> {% else %} <span class="text-danger">NOT PAID</span> {% endif %} </td>
+              <td class="text-end">{{student.order.razorpay_order_id }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+</div>
+
+{% endblock wrapper %}

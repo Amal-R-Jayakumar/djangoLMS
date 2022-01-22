@@ -1,0 +1,58 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block wrapper %}
+{% include 'nav.html' %}
+
+
+<div class="container py-5">
+    <div class="alert alert-info" role="alert">
+        <p class="text-center pb-0 mb-0">Do not Refresh the page while attending the test, as you will loose your progress.</p>
+    </div>
+<form method="post">{% csrf_token %}
+{% for question in question_list %}
+        <div class="card px-0 my-4 ">
+            <div class="card-body black-text">
+                {{error}}
+                <div class="container mt-sm-5 my-1">
+                    <div class="question ms-sm-5 ps-sm-5 pt-2">
+                        <div class="py-2 h5">
+                            <b>Q. {{question.question}}</b>
+                            <div class="ms-md-3 ms-sm-3 ps-md-5 pt-sm-0 pt-3" id="options">
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="{{question.id}}" id="flexRadioDefault1" value="{{question.opt1}}">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        {{question.opt1}}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="{{question.id}}" id="flexRadioDefault2" value="{{question.opt2}}">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        {{question.opt2}}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="{{question.id}}" id="flexRadioDefault3" value="{{question.opt3}}">
+                                    <label class="form-check-label" for="flexRadioDefault3">
+                                        {{question.opt3}}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="{{question.id}}" id="flexRadioDefault4" value="{{question.opt4}}">
+                                    <label class="form-check-label" for="flexRadioDefault4">
+                                        {{question.opt4}}
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+<input type="submit" value="Submit" class="btn btn-success">
+</form>
+</div>
+{% endblock wrapper %}

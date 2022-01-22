@@ -1,0 +1,34 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <tr>
+                  <th>Sl. No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>College/ATC</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for student_list in student_lists %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{student_list.each_enrollment.student.name}}</td>
+                    <td>{{student_list.each_enrollment.student.email}}</td>
+                    <td>{{student_list.each_enrollment.college.name}}</td>
+                    <td>{% if student_list.status %} Eligible {% else %} Not Eligible {% endif %}</td>
+                    <td>
+                        <a href="{% url 'student_report:individual_student_report' student_list.each_enrollment.student.username %}" class="btn btn-success rounded rounded-pill">View</a>
+                        {% if not student_list.certificate_status %}<a href="{% url 'student_report:certified' course='more-2019' username=student_list.each_enrollment.student.username %}" class="btn btn-success rounded rounded-pill">Issue Certificate</a>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

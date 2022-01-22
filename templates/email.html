@@ -1,0 +1,12 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="email" name="email" id="" placeholder='email'>
+    <button type="submit" class="btn-btn-info">Send Mail</button>
+</form>
+
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

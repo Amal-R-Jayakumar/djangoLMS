@@ -1,0 +1,52 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        <p>{{message}}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+  <div class="row my-4">
+    <div class="col-12">
+      <p class="my-2">Institute: {{study_center.name}}</p>
+      <p class="my-2">Email: {{study_center.admin_user.email}}</p>
+      <p class="my-2">Phone: {{study_center.admin_user.contact_number}}</p>
+    </div>
+  </div>
+  <div class="row my-4">
+    <div class="col-12">
+      <p class="my-2">Students pending approval: {{students_pending_approval}}</p>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <tr>
+          <th>Sl No.</th>
+          <th>Course</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Verification</th>
+        </tr>
+        {% for student in students_added %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td class="text-start">{{student.selected_course.course_name}}</td>
+          <td class="text-start">{{student.name}}</td>
+          <td class="text-start">{{student.email}}</td>
+          <td class="text-end">{{ student.contact_number }}</td>
+          {% if not student.verified %}
+          <td><a href="{% url 'study_center:verify_students_college' student.id %}" class="btn btn-success rounded rounded-pill">Approve</a></td>
+          {% else %}
+          <td><p class="text-success fs-6 fw-bold m-0">Approved</p></td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock wrapper %}

@@ -1,0 +1,26 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block wrapper %}
+    
+    {% if submission_alowed %}
+         <div class="container">
+            <h2>Submit Assignment</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                    {{ form.name.errors }}
+                
+                
+                <input type="submit" value="Submit" class="btn btn-warning btn-lg">
+            </form>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="jumbotron">
+                <h2>Only students are allowed to submit assignments</h2>
+            </div>
+        </div>
+    {% endif %}
+        
+{% endblock wrapper %}
+    

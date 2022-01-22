@@ -1,0 +1,43 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+
+<div class="container pt-5">
+    <div class="row justify-content-center" style="min-height: 80vh;">
+        <div class="col-12 col-md-8">
+            <div class="border-bottom">
+                <p class="fs-2 fw-bold">{{question.title}}</p>
+                <div class="d-flex justify-content-between">
+                    <p class="ms-3 text-secondary" style="font-size: 12px;">Asked by: <span class="ms-4">{{question.author.name}}</span></p>
+                    <p class="ms-3 text-secondary" style="font-size: 12px;">at: <span class="ms-4">{{question.asked_at.date}}</span></p>
+                </div>
+                <p class="m-3 border-top border-bottom p-4">{{question.body}}</p>
+            </div>
+            {% for response in responses %}
+            <div class="card">
+                <div class="card-body">
+                    <p class="ms-3 text-secondary" style="font-size: 12px;">Responded by: <span class="ms-4">{{response.user.name}}</span></p>
+                    <p class="m-3 p-4">{{response.body}}</p>
+                    <p class="ms-3 text-secondary text-end" style="font-size: 12px;">Responded at: <span> {{response.asked_at.date}}</span></p>
+                </div>
+
+            </div>
+            {% endfor %}
+            {% if request.user.user_type == 5 or request.user.user_type == 2 %}
+            <div class="my-3 form-group">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{form.as_p}}
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="submit" value="Submit Answer" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %} {% endblock wrapper %}

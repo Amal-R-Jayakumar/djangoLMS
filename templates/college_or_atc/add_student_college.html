@@ -1,0 +1,41 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+        <p>{{message}}</p>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12">
+                    {{form.as_p}}
+                </div>
+            </div>
+            <div class="row d-flex justify-content-end">
+                <div class="col-3">
+                    <input type="submit" value="Add Student" class="btn btn-info text-white" style="background-color: #f6944d; border-color: #f6944d" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-12 my-3">
+            <table class="table table-striped">
+                <tr><th>Name</th><th>Course</th><th>Email</th><th>Contact Number</th></tr>
+                {% for each_student in student_added %}
+                <tr>
+                    <td>{{each_student.name}}</td>
+                    <td>{{each_student.selected_course.course_name}}</td>
+                    <td>{{each_student.email}}</td>
+                    <td>{{each_student.contact_number}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock wrapper %}

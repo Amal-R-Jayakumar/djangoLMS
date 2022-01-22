@@ -1,0 +1,40 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container-fluid" style="min-height: 100vh">
+  <div class="row">
+    <div class="col-12 text-dark">
+      <div class="container py-3">
+
+        {% for course,each_item in performance_list.items %}
+          <p>{{course}}</p>
+          <table class="table table-bordered mx-2">
+            <tr>
+              <th>Day</th>
+              <th>Test Attended</th>
+              <th>Assignments Attended</th>
+            </tr>
+            {% for value in each_item.test_assignment %}
+          <tr>
+            <td>{{value.session.session}}</td>
+            <td>{{value.exam.marks}}</td>
+            <td>{{value.assignment.assignment_avg_marks}}</td>
+          </tr>
+          <tr>
+            {% endfor %}
+            <th>Total</th>
+            <th>{{each_item.total_in_tests}}</th>
+            <th>{{each_item.total_in_assignments}}</th>
+          </tr>
+        </table>
+        <div class="container">
+          <p class="fs-6">
+            Grand Total = {{each_item.grand_total}}
+          </p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %} {% endblock wrapper %}

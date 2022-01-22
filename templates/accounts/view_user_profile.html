@@ -1,0 +1,67 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container-fluid">
+  <div class="row d-flex align-items-stretch ">
+    <div class="col-12 col-sm-2 col-md-4 col-xl-3 px-sm-2 px-0 text-dark">{% include 'accounts/sidebar.html' %}</div>
+    <div class="col-12 col-sm-10 col-md-8 col-xl-9 text-dark">
+      <div class="container d-flex justify-content-center py-3">
+        <div class="row">
+          <div class="card px-0 width-60vw">
+            <div class="card-header px-4 mx-0">
+              <p class="fs-4">{{request.user.name}}</p>
+            </div>
+            <div class="card-body">
+            
+                  <p>Contact Number</p>
+                  <hr style="width:10vw;">
+                  <div class="d-flex justify-content-end">
+                    <div>
+                        <p class="text-end fw-bold">{{request.user.contact_number}}</p>
+                        <hr class="width-55vw">
+                    </div>
+                    </div>
+
+                  <p>Email Address</p>
+                  <hr style="width:10vw;">
+                  <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{request.user.email}}</p>
+                      <hr class="width-55vw">
+                    </div></div>
+                    {% if request.user.user_type == 1 %}
+                  <p>Gender</p>
+                  <hr style="width:10vw;">
+                  <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{request.user.gender}}</p>
+                      <hr class="width-55vw">
+                    </div></div>
+
+                  <p>Date of Birth</p>
+                  <hr style="width:10vw;">
+                  <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{profile.dob}}</p>
+                      <hr class="width-55vw">
+                    </div></div>
+                    {% endif %}
+                  <p>Address</p>
+                  <hr style="width:10vw;">
+                  <div class="d-flex justify-content-end"><div>
+                      <p class="text-end fw-bold">{{profile.address}}</p>
+                      <hr class="width-55vw">
+                    </div></div>
+                    {% if request.user.user_type == 1 %}
+                    <p>Currently Pursuing</p>
+                    <hr style="width:10vw;">
+                    <div class="d-flex justify-content-end"><div>
+                    <p class="text-end fw-bold">{{profile.qualification}}</p>
+                    <hr class="width-55vw">
+                </div></div>
+                  {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock wrapper %}

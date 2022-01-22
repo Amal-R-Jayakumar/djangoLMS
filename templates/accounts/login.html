@@ -1,0 +1,44 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% load widget_tweaks %} {% include 'nav.html' %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <div class="card card-width border-0">
+
+        <div class="card-body" style="background-color: #fafbfb;" >
+          <div class="d-flex justify-content-center">
+            <img src="{% static 'images/itkeralalogo.svg' %}" style="max-height:250px;" alt="" class="img-fluid my-4">
+          </div>
+          <form action="" method="post">
+            {% csrf_token %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">{{error}}</div>
+            {% endfor %}
+            <div class="form-group">
+
+                {% if  form.username.error %}
+                    <div class="alert alert-danger">{{form.username.error}}</div>
+                {% endif %}
+
+                {% render_field form.username placeholder="Email" class="form-control d-inline-block"%}
+                <br /><br />
+                {% if  form.password.error %}
+                    <div class="alert alert-danger">{{form.password.error}}</div>
+                {% endif %}
+                {% render_field form.password placeholder="Password" class="form-control d-inline-block"%}
+                <div class="d-flex justify-content-center mt-3">
+                    <input type="submit" value="Login" class="btn btn-info text-white px-4" style="background-color: #f6944d; border-color: #f6944d"/>
+                    <a href="{% url 'accounts:signup' %}" class="py-2 mx-2">Signup <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <a href="{% url 'accounts:reset_password' %}">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock wrapper %}

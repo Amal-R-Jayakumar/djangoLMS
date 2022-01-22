@@ -1,0 +1,76 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<div class="container mt-3">
+  {% if msg != None %}
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">
+        <p class="text-center pt-3">{{msg}}</p>
+      </div>
+    </div>
+  </div>
+    {%for message in messages %}
+        <p class="{{message.tags}}">{{message}}</p>
+    {% endfor %}
+  {% else %}
+  <div class="row">
+    <div class="col-6">
+      <a class="btn btn-info text-white" href="{% url 'student_report:study_center_enrollments_export' study_center.id  %}">Export CSV</a>
+    </div>
+    {% if study_center.institute == 2 %}
+    <div class="col-6 d-flex justify-content-end">
+      <a class="btn btn-info text-white mx-2" href="{% url 'study_center:edit_atc_details' study_center.id  %}">Edit Study Center</a>
+      <a class="btn btn-info text-white mx-2" href="{% url 'study_center:approve_students_college' study_center.code  %}">Verify Students</a>
+    </div>
+    {% else %}
+    {% if request.user.suer_type == 5 %}
+    <div class="col-6 d-flex justify-content-end">
+      <a class="btn btn-info text-white mx-2" href="{% url 'study_center:edit_atc_details' study_center.id  %}">Edit Study Center</a>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="row my-4">
+    <div class="col-12">
+      <p class="my-2">Institute: {{study_center.name}}</p>
+      <p class="my-2">Email: {{study_center.admin_user.email}}</p>
+      <p class="my-2">Phone: {{study_center.admin_user.contact_number}}</p>
+    </div>
+  </div>
+  <div class="row my-4">
+    <div class="col-12">
+      <p class="my-2">Total enrollments today({{today}}): {{enrollments_from_today}}</p>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <tr>
+          <th>Sl. No.</th>
+          <th>Name</th>
+          <th>Course</th>
+          <th>Days Completed till now.</th>
+          <th>Marks in Daily Tests (till {{today}})</th>
+          <th>Assignment Submitions</th>
+          <th>Assignment Total</th>
+          <th>View Student Data</th>
+        </tr>
+        {% for enrollment in enrollments %} {% if enrollment.student.user_type == 1 %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td class="text-start">{{enrollment.student.name}}</td>
+          <td class="text-start">{{enrollment.course.course_name}}</td>
+          <td class="text-end">{{ enrollment.student.conducttest_set.all.count }}</td>
+          <td class="text-end">{{ enrollment.final_cumulative_marks }}</td>
+          <td class="text-end">{{ enrollment.student.submitassignment_set.all.count }}</td>
+          <td class="text-end">{{ enrollment.assignment_marks }}</td>
+
+          <td><a href="{% url 'student_report:individual_student_report' enrollment.student.username %}" class="btn btn-success rounded rounded-pill">View</a></td>
+        </tr>
+        {% endif %} {% endfor %}
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock wrapper %}

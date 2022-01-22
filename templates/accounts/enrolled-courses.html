@@ -1,0 +1,35 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+
+<div class="container-fluid" style="min-height: 100vh;">
+  <div class="row">
+    <div class="col-12 col-sm-2 col-md-4 col-xl-3 px-sm-2 px-0 text-dark">{% include 'accounts/sidebar.html' %}</div>
+    <div class="col-12 col-sm-10 col-md-8 col-xl-9 text-dark">
+    <div class="container py-3 d-flex justify-content-center align-items-middle">
+      {% for enrolled_course in enrolled_course_list %}
+
+         <div class="course card m-2" style="width: 16rem">
+           <div class="card-image" style="height:160px;background-image:url({{enrolled_course.course.course_image.url}});">
+
+           </div>
+           <div class="card-header">
+             <strong> {{enrolled_course.course.course_name}} </strong>
+           </div>
+           <div class="card-body">
+             <p class="my-0">{{enrolled_course.course.course_description|truncatewords:10}}</p>
+             <a href="{% url 'courses:course_detail' enrolled_course.course.slug %}" class="btn btn-warning white-text p-2 m-2">Curriculm</a>
+           </div>
+
+           <div class="card-footer">
+             <p>Duration: {{enrolled_course.course.completion_time.days}} working days</p>
+           </div>
+         </div>
+       
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

@@ -1,0 +1,75 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container" style="min-height: 85vh">
+  <div class="row d-flex justify-content-center align-items-center" style="min-height: 85vh">
+    <div class="card px-0 mx-0" style="max-width: 36rem">
+      <div class="card-header">
+        <p class="text-center py-0 fs-4">Complete Your Payment</p>
+      </div>
+      <div class="card-body d-flex justify-content-center">
+        <div class="row">
+
+          <table class="table table-bordered">
+            <tr><th>Sl No.</th><th>Name</th><th>Email</th><th>Course</th></tr>
+            {% if request.user == 3 %}
+            {% for each_student in students %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{each_student.student.name}}</td>
+              <td>{{each_student.student.email}}</td>
+              <td>{{each_student.course.course_name}}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td>1. </td>
+              <td>{{student.user.name}}</td>
+              <td>{{student.user.email}}</td>
+              <td>{{student.course.course_name}}</td>
+            </tr>
+            {% endif %}
+          </table>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-warning px-3" style="width:fit-content"  id="pay-btn">Pay Rs. {{amount}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = {
+    // Enter the Key ID generated from the Dashboard
+    key: "{{ razorpay_merchant_key }}",
+    contact: "{{contact}}",
+
+    // Amount is in currency subunits.
+    // Default currency is INR. Hence,
+    // 50000 refers to 50000 paise
+    amount: "{{ razorpay_amount }}",
+    currency: "{{ currency }}",
+
+    // Your/store name.
+    name: "{{request.user.name}}",
+    prefill: {
+      name: "{{request.user.name}}",
+      email: "{{email}}",
+      contact: "{{contact}}",
+    },
+    // Pass the `id` obtained in the response of Step 1
+    order_id: "{{ razorpay_order_id }}",
+    callback_url: "{{ callback_url }}",
+  };
+
+  // initialise razorpay with the options.
+  var rzp1 = new Razorpay(options);
+
+  // add event listener to the payment button.
+  document.getElementById("pay-btn").onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+  };
+</script>
+{% include 'footer.html' %} {% endblock wrapper %}

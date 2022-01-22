@@ -1,0 +1,78 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<div class="container">
+  {% if request.user.user_type == 4 or request.user.user_type == 5 %}
+  <div class="row mt-4">
+    <div class="col d-flex justify-content-end">
+      <form action="" method="get">
+        {{district_filter.form}}
+        <input type="submit" value="Search" class="btn btn-success text-white">
+      </form>
+      <a href="{% url 'student_report:issue_certificate' %}" class="btn btn-info text-white mx-2">Issue Cerificate</a>
+      <a href="{% url 'student_report:view_student_reports' %}" class="btn btn-info text-white mx-2">View Full Report</a>
+    </div>
+  </div>
+  <div class="row">
+    {% for each_center in study_centers %}
+    <div class="col-lg-4 col-md-6 col-12 d-flex">
+      <div class="card my-4" style="width: 100%">
+        <div class="card-header border-0 bg-white">
+          <p class="fs-6 fw-bold my-0">{{each_center.name}}</p>
+          <span class="badge bg-warning text-dark rounded-pill">{{each_center.get_institute_display}}</span>
+        </div>
+        <div class="card-body d-flex align-items-end py-0">
+        <div style="width:100%">
+          <table class="table border-top table-borderless">
+            <tr>
+              <td><span class="text-secondary">Code: </span></td>
+              <td>{{each_center.code}}</td>
+            </tr>
+            <tr>
+              <td><span class="text-secondary">Director: </span></td>
+              <td>{{each_center.admin_user.name}}</td>
+            </tr>
+            <tr>
+              <td><span class="text-secondary">Phone: </span></td>
+              <td>{{each_center.admin_user.contact_number}}</td>
+            </tr>
+            <tr>
+              <td><span class="text-secondary">Email: </span></td>
+              <td>{{each_center.admin_user.email}}</td>
+            </tr>
+          </table>
+          {% comment %}
+          <table class="table border-top table-borderless">
+            <tr>
+              <td><span class="text-secondary">Total Enrollments:</span></td>
+              <td><span class="text-success">{{each_center.enrollment_set.count}}</span></td>
+            </tr>
+          </table>
+          {% endcomment %}
+          </div>
+        </div>
+        <div class="card-footer bg-white text-end px-1">
+          {% if request.user.user_type == 5 %}
+          <a class="btn btn-info text-white mx-2" href="{% url 'study_center:edit_atc_details' each_center.id  %}">Edit Details</a>
+          {% if each_center.admin_user.is_active %}
+          <a href="{% url 'student_report:deactivate_study_center' each_center.code %}" class="btn btn-danger">Deactivate</a>
+          {% else %}
+          <a href="{% url 'student_report:reactivate_study_center' each_center.code %}" class="btn btn-success">Reactivate</a>
+          {% endif %}
+          {% endif %}
+          {% if request.user.user_type == 5 %}
+          <a href="{% url 'study_center:add_students_admin' each_center.code %}" class="btn btn-warning text-white">Add Students</a>
+          {% endif %}
+          <a href="{% url 'student_report:study_center_enrollments' each_center.id %}" class="btn btn-success text-white">Report</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="row my-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="text-center">You do not have authorization to visit this page please go back.</p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock wrapper %}

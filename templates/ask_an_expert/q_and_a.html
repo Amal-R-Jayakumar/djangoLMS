@@ -1,0 +1,57 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+
+<div class="container pt-5" style="min-height:100vh;">
+  <h2 class="text-center">Ask Our Experts</h2>
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-info" role="alert">
+                <p class="text-center mb-0">Click on the question to see the responses.</p>
+            </div>
+            <div class="d-flex justify-content-end mb-4">
+                <a href="{% url 'ask_an_expert:ask_question' %}" class="btn btn-success">Ask Question</a>
+            </div>
+            <table class="table table-bordered">
+               <tr>
+                   <th>Category</th>
+                   <th>Author</th>
+                   <th>Question</th>
+               </tr>
+                {% for question in questions%}
+                <tr>
+                    {% if question.category == 'word' %}
+                    <td class="table-primary">
+                    MS Word
+                    {% elif question.category == 'excel' %}
+                    <td class="table-success">
+                    MS Excel
+                    {% elif question.category == 'ppt' %}
+                    <td class="table-danger">
+                    MS PowerPoint
+                    {% elif question.category == 'access' %}
+                    <td class="table-danger">
+                    MS Access
+                    {% elif question.category == 'outlook' %}
+                    <td class="table-warning">
+                    MS Outlook
+                    {% endif %}
+                    </td>
+                    <td>
+                        <p>{{question.author.name}}</p>
+                    </td>
+                    <td>
+                        <a href="{% url 'ask_an_expert:answer' question.id %}"style="color:#2b165d">
+                            <p>{{question.title}}</p>
+                        </a>
+                    </td>
+                </tr>
+
+
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %} {% endblock wrapper %}

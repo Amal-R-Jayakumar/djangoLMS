@@ -1,0 +1,133 @@
+{% load static %}
+<header class="py-3 bg-light border-bottom">
+  <div class="container">
+    <div class="row">
+      <div class=" col-6 d-flex justify-content-start align-items-center">
+        <a class="navbar-brand" href="{% url 'accounts:home' %}"><img height="55px" src="{% static 'images/Itkeralalogo.svg' %}" alt="" class="d-inline-block"/></a>
+      </div>
+      <div class=" col-6 d-flex justify-content-end py-0 my-0 align-items-center">
+        <a class="navbar-brand" href="{% url 'accounts:home' %}"><img height="60px" src="{% static 'images/rutronixlogo.svg' %}" alt="" class="d-none d-md-inline-block"/></a><img height="60px" src="{% static 'images/rutronixlogo-phone.svg' %}" alt="" class="d-md-none d-inline-block"/></a>
+        <div class="d-none d-sm-flex">
+          <a href="#" class="nav-item mx-2"><i class="bi bi-facebook fs-5 blue-grey-darken-4-text"></i></a>
+          <a href="#" class="nav-item mx-2"><i class="bi bi-instagram fs-5 blue-grey-darken-4-text"></i></a>
+          <a href="#" class="nav-item mx-2"><i class="bi bi-youtube fs-5 blue-grey-darken-4-text"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<nav class="navbar sticky-top navbar-expand-xl py-2 navbar-dark bg-dark" style="background-color: rgb(240, 240, 240)">
+  <div class="container py-0">
+    {% comment %}
+    <!-- <a class="navbar-brand py-0" href="{% url 'accounts:home' %}">
+      <img src="{% static 'images/rutronixwhitelogo.svg' %}" class="d-none d-sm-inline-block" alt=""  height="60" />
+      <img src="{% static 'images/rutronixwhitelogo.svg' %}" class="d-inline-block d-sm-none" alt=""  height="48" />
+    </a> -->
+    {% endcomment %}
+
+     <a class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="bi bi-list"></span>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav navbar-nav {% if not request.user.is_authenticated %}ms-auto{% endif %} mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'home' %}active{% endif %}{% if request.user.user_type == 1 %} {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}{% endif %}" href="{% url 'accounts:home' %}"><i class="bi bi-house-door"></i> Home</a>
+      </li>
+    {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'rules' %}active{% endif %} {% if request.user.user_type == 1 %} {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}{% endif %}" href="{% url 'courses:rules' %}"><i class="bi bi-file-earmark-ruled"></i> Instructions</a>
+      </li>
+      {% if request.user.user_type == 4 or request.user.user_type == 5 %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'fee_paid_students' %}active{% endif %}{% endif %}" href="{% url 'student_report:fee_paid_students' %}"><i class="bi bi-file-earmark-ruled"></i> ATCs </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'add_atc' %}active{% endif %}{% endif %}" href="{% url 'study_center:add_atc' %}"><i class="bi bi-node-plus"></i> Add New ATC </a>
+        </li>
+      {% endif %}
+      {% if request.user.user_type != 4 %}
+      {% if request.user.user_type != 3 %}
+        <li class='nav-item'>
+          <a href="{% url 'ask_an_expert:q_and_a' %}" class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'q_and_a' %}active{% endif %}{% if request.user.user_type == 1 %} {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}{% endif %}"><i class="bi bi-question-diamond"></i> Q and A</a>
+        </li>
+      {% endif %}
+      {% endif %}
+
+      {% if request.user.user_type == 1 %}
+        <li class='nav-item'>
+          <a href="{% url 'accounts:performance_analysis' %}" class="nav-link {% if request.resolver_match.url_name == 'performance_analysis' %}active{% endif %} {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}"><i class="bi bi-layers"></i> Performance</a>
+        </li>
+      {% endif %}
+      {% if request.user.user_type == 5 %}
+        <li class="nav-item">
+          <a href="{% url 'accounts:enquiry' %}" class="nav-link {% if request.resolver_match.url_name == 'enquiry' %}active{% endif %}">
+          <i class="bi bi-file-earmark-spreadsheet"></i> Enquiry</a>
+        </li>
+      {% endif %}
+      {% if request.user.user_type == 2 or request.user.user_type == 4 or request.user.user_type == 5 %}
+        <li class="nav-item">
+          <a href="{% url 'student_report:study_center' %}" class="nav-link {% if request.resolver_match.url_name == 'study_center' %}active{% endif %}">
+          <i class="bi bi-archive"></i> Report</a>
+        </li>
+      {% elif request.user.user_type == 3 %}
+        {% if request.user.studycenter_set.all %}
+        <li class="nav-item">
+          <a href="{% url 'student_report:view_student_reports' %}" class="nav-link {% if request.resolver_match.url_name == 'view_student_reports' %}active{% endif %}">
+          <i class="bi bi-archive"></i> Report</a>
+        </li>
+        {% if request.user.studycenter_set.first.institute == 2 %}
+        <li class="nav-item">
+          <a href="{% url 'study_center:add_student_college' %}" class="nav-link {% if request.resolver_match.url_name == 'add_student_college' %}active{% endif %}">
+          <i class="bi bi-plus-square"></i> Add Students</a>
+        </li>
+        {% endif %}
+        {% endif %}
+      {% endif %}
+        <li class="nav-item">
+          <a href="{% url 'courses:courses' %}"
+            class="nav-link {% if request.user.is_authenticated %}{% if request.resolver_match.url_name == 'courses' %}active{% endif %}{% if request.user.user_type == 1 %} {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}disabled{% endif %}{% endif %}{% endif %}"><i class="bi bi-book-half"></i> Courses</a>
+        </li>
+        {% if request.user.user_type != 1 %}
+        <li class="nav-item">
+          <a href="{% url 'courses:answer-key' %}" class="nav-link {% if request.resolver_match.url_name == 'answer-key' %}active{% endif %}">
+          <i class="bi bi-archive"></i> Answer Key</a>
+        </li>
+        {% endif %}
+      {% else %}
+      {% if not request.resolver_match.url_name == 'login' %}
+      <li class="nav-item"><a class="btn btn-light" href="{% url 'accounts:login' %}"><i class="bi bi-shield-lock"></i> Login</a>
+      </li>
+      {% endif %}
+      {% endif %}
+    </ul>
+    {% if request.user.is_authenticated %}
+    <ul class="nav navbar-nav ms-auto mb-2 mb-lg-0">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i> {{user.name}}</a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          {% if request.user.user_type == 1 %}
+          {% if not request.user.profile.address or not request.user.profile.qualification or not request.user.profile.dob %}
+          <li class="px-2">
+            <a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle"></i>Edit Profile</a>
+          </li>
+          {% else %}
+          <li class="px-2">
+            <a class="dropdown-item" href="{% url 'accounts:view_profile' %}"><i class="bi bi-person-circle"></i> Profile</a>
+          </li>
+          {% endif %}
+          {% else %}
+          <li class="px-2">
+            <a class="dropdown-item" href="{% url 'accounts:view_profile' %}"><i class="bi bi-person-circle"></i> Profile</a>
+          </li>
+          {% endif %}
+          <li><hr class="dropdown-divider" /></li>
+          <li class="px-2">
+            <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    {% endif %}
+  </div>
+  </div>
+</nav>

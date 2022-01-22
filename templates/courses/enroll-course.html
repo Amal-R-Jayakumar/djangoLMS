@@ -1,0 +1,22 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% load widget_tweaks %} {% include 'nav.html' %}
+
+<div class="container-fluid">
+    {% if error %}
+        <p class=" m-5 text-danger">{{error}}</p>
+    {% endif %}
+    <form action="" method="post" class="m-5">
+        {% csrf_token %}
+        <select class="form-select" name="institute" aria-label="Default select example">
+            <option selected>Select Training Center</option>
+            {% for institute in institutes %}
+                <option value="{{institute.id}}">{{institute.code}}: {{institute.name}}, {{institute.address}}</option>
+            {% endfor %}
+        </select>
+        {% if course.price == 0 %}
+        <input type="submit" value="Enroll for Course" class="btn btn-primary my-5">
+        {% else %}
+        <input type="submit" value="Pay for Course" class="btn btn-primary my-5">
+        {% endif %}
+    </form>
+</div>
+{% endblock wrapper %}

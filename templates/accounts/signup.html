@@ -1,0 +1,129 @@
+{% extends 'wrapper.html' %} {% block wrapper %} {% load widget_tweaks %} {% include 'nav.html' %}
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">Sign Up</div>
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+
+        {% for error in sign_up_form.non_field_errors %}
+          <div class="alert alert-danger">{{error}}</div>
+        {% endfor %}
+
+        {% for error in profile_form.non_field_errors %}
+          <div class="alert alert-danger">{{error}}</div>
+        {% endfor %}
+        
+        {% comment %}<!-- Name -->{% endcomment %}
+        <div class="form-input">
+          {% if  sign_up_form.name.errors %}
+            <div class="alert alert-danger">{{sign_up_form.name.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.name id="floatingName" placeholder="Name*" class="form-control"%}
+            <label for="floatingName"><i class="bi bi-person"></i><span class="ms-4">Name</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Contact Number -->{% endcomment %}
+        <div class="form-input">
+          {% if  sign_up_form.contact_number.errors %}
+            <div class="alert alert-danger">{{sign_up_form.contact_number.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.contact_number placeholder="Contact Number*" id="floatingContact" class="form-control"%}
+            <label for="floatingContact"><i class="bi bi-phone"></i><span class="ms-4">Contact Number</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Email -->{% endcomment %}
+        <div class="form-input">
+          {% if  sign_up_form.email.errors %}
+            <div class="alert alert-danger">{{sign_up_form.email.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.email placeholder="Email*" id="floatingEmail" class="form-control"%}
+            <label for="floatingEmail"><i class="bi bi-envelope"></i><span class="ms-4">Email</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Gender -->{% endcomment %}
+        <div class="form-input">
+          {% if  sign_up_form.gender.errors %}
+            <div class="alert alert-danger">{{sign_up_form.gender.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.gender id="floatingGender" placeholder="Gender*" class="form-control"%}
+            <label for="floatingGender"><i class="bi bi-person-lines-fill"></i><span class="ms-4">Gender</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Date of Birth -->{% endcomment %}
+        <div class="form-input">
+          {% if  profile_form.dob.errors %}
+            <div class="alert alert-danger">{{profile_form.dob.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {{profile_form.dob}}
+            <label for="floatingDob"><i class="bi bi-calendar-check"></i><span class="ms-4">Date of Birth</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Address -->{% endcomment %}
+        <div class="form-input">
+          {% if  profile_form.address.errors %}
+            <div class="alert alert-danger">{{profile_form.address.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field profile_form.address style="height:70px" id="floatingAddress" %}
+            <label for="floatingAddress"><i class="bi bi-card-text"></i><span class="ms-4">Address</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Qualification -->{% endcomment %}
+        <div class="form-input">
+          {% if  profile_form.qualification.errors %}
+            <div class="alert alert-danger">{{profile_form.qualification.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {{profile_form.qualification}}
+            <label for="floatingQualification"><i class="bi bi-award"></i><span class="ms-4">Qualification</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- Password -->{% endcomment %}
+        <div class="form-input">
+          {% if  sign_up_form.password1.errors %}
+            <div class="alert alert-danger">{{sign_up_form.password1.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.password1 placeholder="Password*" class="form-control" id="floatingPassword" %}
+            <label for="floatingPassword"><i class="bi bi-lock"></i><span class="ms-4">Password</span></label>
+          </div>
+        </div>
+
+        {% comment %}<!-- ConfirmPassword -->{% endcomment %}
+        <div class="form-input">
+          <p>
+            {{sign_up_form.password2.errors}}
+          </p>
+          {% if  sign_up_form.password2.error %}
+            <div class="alert alert-danger">{{sign_up_form.password2.errors}}</div>
+          {% endif %}
+          <div class="form-floating">
+            {% render_field sign_up_form.password2 placeholder="Confirm Password*" class="form-control" id="floatingConfirmPassword" %}
+            <label for="floatingConfirmPassword"><i class="bi bi-lock"></i><span class="ms-4">Confirm Password</span></label>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <input type="submit" value="Signup" class="btn btn-info text-white px-4 mx-2" style="background-color: #f6944d; border-color: #f6944d"/>
+            <a href="{% url 'accounts:login' %}" class="py-2 mx-2">Login <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock wrapper %}

@@ -1,0 +1,30 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        <p class="text-center">{{error}}</p>
+    </div>
+    {% endif %}
+    <p >Student: <span class="mx-2">{{student.name}}</span></p>
+    <p >Assignment: <span class="mx-2">{{assignment.assignment_name}}</span></p>
+    <p >Description: </p>
+    <p class="ms-5">{{assignment.assignment_description}}</p>
+
+    {% if assignment.image %}
+    <img src="{{assignment.image.url}}" class="img-fluid my-4" alt="Assignment Hint" />
+    {% endif %}
+
+    <p>Download Assignment:
+<a href="{% url 'student_report:assignment_file' username=student.username assignment=assignment.id %}" class="btn btn-info rounded rounded-pill">Download</a>
+    </p>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Submit" class="btn btn-success">
+        </form>
+    </div>
+</div>
+
+{% endblock wrapper %}

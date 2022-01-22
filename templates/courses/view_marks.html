@@ -1,0 +1,100 @@
+{% extends 'wrapper.html' %} {% load static %} {% load widget_tweaks %} {% block wrapper %} {% include 'nav.html' %}
+<header>
+
+</header>
+<div class="container-fluid p-0">
+    <div class="row p-0">
+        <div class="d-block d-sm-none" style="background-image: url({% static 'images/exam.svg' %}); max-height: 400px; min-height: 200px; background-position:center; background-repeat:no-repeat; background-size:cover;">
+        </div>
+        <div class="d-none d-sm-block" style="background-image: url({% static 'images/exam.svg' %}); min-height: 400px; background-position:center; background-repeat:no-repeat; background-size:cover;">
+        </div>
+    </div>
+</div>
+<main class="container">
+  <div class="d-flex bg-blue align-items-center p-2 my-3 text-white rounded shadow-sm">
+    <img class="me-2" src="{% static 'images/rutronixwhitelogo.svg' %}" alt="" height="52">
+    <div class="lh-1">
+      <h1 class="h6 mb-0 text-white lh-1">MORE 2019</h1>
+    </div>
+    <div class="ms-auto">
+        <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-success">Course</a>
+    </div>
+  </div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-info mb-2" role="alert">
+                        <p class="text-center mb-0"> Attend all the tests as they open to increares your total. Score a minimum of 50% (2 out of 4) to pass in each test.</p>
+                    </div>
+                    <p class="fs-5" >Student: {{request.user.name}}</p>
+                    <p class="fs-6" >Exam Attended for: {{last_attended.session.session}}</p>
+                    <p class="fs-6" >Marks Obtained: {{last_attended.marks}} out of 4</p>
+                    {% if last_attended.marks == 4 %}
+                    <div class="alert alert-success" role="alert">
+                        <p class="text-center mb-0">You got the perfect score in this test. Congratulations. Keep up the good work.</p>
+                    </div>
+                    {% endif %}
+
+                    {% if last_attended.marks < 2 %}
+                    <div class="alert alert-danger" role="alert">
+                        <p class="mb-0 text-center">
+                            You Failed. Attend the class and take the test again to improve your Score
+                        </p>
+                    </div>
+                    {% elif last_attended.marks >= 2 and last_attended.marks < 4 and not is_improved %}
+                    <div class="card my-2">
+                        <div class="card-header bg-dark">
+                            <p class="fs-3 py-0 my-0 text-white text-center">Do you want to improve your marks?</p>
+                        </div>
+                        <div class="card-body">
+                          <form method="post">{% csrf_token %}
+                            <div class="my-3  d-flex justify-content-around">
+                              <input type="submit" value="No" class="btn btn-warning btn-lg">
+                              <a href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=lesson.slug %}" class="btn btn-info btn-lg">Yes</a>
+                            </div>
+                          </form>
+                            <div class="alert alert-primary" role="alert">
+                                <p class="text-center my-0">{{error}}</p>
+                            </div>
+                            <p class="fs-3" >Student: {{request.user.name}}</p>
+                            <p class="fs-4" >Exam Attended for: {{last_attended.session.session}}</p>
+                            <p class="fs-4" >Marks Obtained: {{last_attended.marks}}</p>
+                            <!-- <form method="post">{% csrf_token %}
+                                    <div class="d-flex justify-content-around">
+                                    <input type="submit" value="No" class="btn btn-warning btn-lg">
+                                    <a href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=lesson.slug %}" class="btn btn-info btn-lg">Yes</a>
+                                </div>
+                            </form> -->
+                        </div>
+                    </div>
+                    {% endif %}
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12 col-sm-10 col-lg-6">
+
+
+
+                        <table class="table ">
+                            <tr><th scope="row" class="fs-6">Day</th><th scope="row" class="fs-6 text-end">Mark out of 4</th></tr>
+
+                            {% for each_test in exams %}
+                            <tr>
+                                <td >{{each_test.session.session}}</td>
+                                <td class="text-end">{{each_test.marks}}</>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th scope="row" class="fs-6">Total till now</th> <th scope="row" class="fs-6 text-end">{{cumulative}} out of {{total}}</th>
+                            </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock wrapper %}

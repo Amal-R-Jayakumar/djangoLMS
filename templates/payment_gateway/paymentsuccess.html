@@ -1,0 +1,15 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container" style="min-height: 85vh">
+  <div class="row d-flex justify-content-center align-items-center" style="min-height: 85vh">
+    <h1 class="text-center">Payment was Successfull</h1>
+    <p class="text-center">
+      {% if request.user.user_type == 3 %}
+        <a href="{% url 'student_report:view_student_reports' %}">Go to Student Dashboard <i class="bi bi-arrow-right"></i></a>
+      {% else %}
+        <a href="{% url 'courses:enrolled_courses' %}">Go to Enrolled Courses<i class="bi bi-arrow-right"></i></a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% include 'footer.html' %} {% endblock wrapper %}

@@ -1,0 +1,46 @@
+<!-- This is actually the page to edit user profile. view_user_profile is the page to visit to view the profile -->
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-2 col-md-4 col-xl-3 px-sm-2 px-0 text-dark">{% include 'accounts/sidebar.html' %}</div>
+    <div class="col-12 col-sm-10 col-md-8 col-xl-9 text-dark">
+      <div class="container py-3">
+        {% if request.user.user_type == 1 %}
+        <p class="text-start fs-6"><i>Email:</i> <strong>{{user.email}}</strong></p>
+        <p class="text-start fs-6"><i>Name:</i> <strong>{{user.name}}</strong></p>
+        <p class="text-start fs-6"><i>Contact Number:</i> <strong>{{user.contact_number}}</strong></p>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{u_form.as_p}}
+          <!-- Date of Birth -->
+            <div class="form-group">
+              {{p_form.dob.errors}}
+              {% if request.user.user_type == 1 %}
+              {{p_form.dob.label}}:
+              {{p_form.dob}}
+
+            <p class="lh-1 text-yellow">{{p_form.dob.help_text}}</p>
+            {% endif %}
+            </div>
+            <!-- Date of Birth -->
+            <!-- Address -->
+            <p>{{p_form.address.label}} {{p_form.address}}</p>
+            <!-- Address -->
+            <!-- Courses Currently Pursued -->
+            {% if request.user.user_type == 1 %}
+            <p>{{p_form.qualification.label}} {{p_form.qualification}}</p>
+            {% endif %}
+            <!-- Courses Currently Pursued -->
+            <!-- Profile Picture -->
+            <p>{{p_form.profile_pic.label}} {{p_form.profile_pic}}</p>
+            <!-- Profile Picture -->
+            <br />
+            <input type="submit" value="Update" class="btn btn-success" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock wrapper %}

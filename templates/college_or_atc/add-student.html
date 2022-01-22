@@ -1,0 +1,54 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-sm-2 col-md-4 col-xl-3 px-sm-2 px-0 text-dark">{% include 'accounts/sidebar.html' %}</div>
+    <div class="col-12 col-sm-10 col-md-8 col-xl-9 text-dark">
+      <div class="container my-3">
+        <form action="" method="post">
+          {% csrf_token %} {% for error in student_user_form.non_field_errors %}
+          <div class="alert alert-danger">{{error}}</div>
+          {% endfor %} {% for error in profile_form.non_field_errors %}
+          <div class="alert alert-danger">{{error}}</div>
+          {% endfor %} {% if error %}
+          <div class="alert alert-danger">{{error}}</div>
+          {% endif %} {{student_user_form.as_p}} {{profile_form.as_p}}
+          <div class="form-group mt-3">
+            <label for="selectCourse">Select Course:</label>
+            <select class="form-select py-3 px-4 border-0 border-bottom" id="selectCourse" name="course_id" aria-label="Default select example">
+              <option selected>Select Course</option>
+              {% for course in courses %}
+              <option value="{{course.id}}">{{course.course_name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="d-flex justify-content-end my-3">
+            <input type="submit" value="Add Student" name="AddStudent" class="btn btn-info text-white px-4" style="background-color: #f6944d; border-color: #f6944d" />
+          </div>
+        </form>
+        <table class="table table-bordered">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+          </tr>
+          {% for student in students %}
+          <tr>
+            <td>{{student.student.name}}</td>
+            <td>{{student.student.email}}</td>
+            <td>{{student.course.course_name}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% if students %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="d-flex justify-content-end my-3">
+            <input type="submit" value="Complete Payment" name="PayForStudents" class="btn btn-info text-white px-4" style="background-color: #f6944d; border-color: #f6944d" />
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock wrapper %}

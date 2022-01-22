@@ -1,0 +1,86 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container-fluid px-0">
+  <div class="row g-0">
+    <div class="col-lg-9 col-md-7">
+      {% if messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        {{message}}<br>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endif %}
+      <div class="py-144" style="min-height:450px;background-image:url({{course.course_image.url}});background-repeat:no-repeat;background-position:center;">
+        <div class="d-block d-md-none card-body px-0" style="background-color: rgba(245, 245, 245, 0.7);">
+          <h1 class="fst-italic">{{course.course_name}}</h1>
+          {% if request.user.user_type == 1 or request.user.user_type == 2 or request.user.user_type == 5 %}
+          <a href="{% url 'courses:enroll_course' course.slug %}" class="btn btn-info white-text">Enroll Now</a>
+          {% endif %}
+          <p class="lead my-3">{{course.course_description}}</p>
+        </div>
+      </div>
+      <div class="row">
+    <div class="col-12">
+      {% if error %}
+      <div class="alert alert-warning mb-0 text-center" role="alert">
+        {{error}}.<a href="{% url 'courses:courses' %}">Enroll to course?</a>
+      </div>
+      {% endif %}
+      <div class="accordion" id="accordionExample">
+        {% for each_session in sessions %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{each_session.id}}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{each_session.id}}" aria-expanded="true" aria-controls="collapse{{each_session.id}}" onclick="this.blur();">{{each_session.session}}</button>
+          </h2>
+          <div id="collapse{{each_session.id}}" class="accordion-collapse collapse" aria-labelledby="heading{{each_session.id}}" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <ul class="list-group list-group-flush">
+                {% for each_lesson in each_session.lesson_set.all %}
+                    <li class="list-group-item">
+                      {% if each_session.session_number <= day %}
+                      <a href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=each_lesson.slug %}">
+                        {% else %}
+                        <div class="alert alert-danger" role="alert">
+                          <span>Session is not open yet. New Sessions Opens on consecutive days after enrollment.</span>
+                        </div>
+                        <a href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=each_lesson.slug %}" class="btn disabled ">
+                      {% endif %}
+                        <p>
+                            {{each_lesson.title}}
+                        </p>
+                        <p class="black-text">
+                           Number of Assignmets: {{each_lesson.assignment_set.all.count}}
+                        </p>
+                      </a>
+                    </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+    <div class="col-lg-3 col-md-5 d-none d-md-flex justify-content-end course-header" style="min-height: 100vh;">
+      <div class="card bg-dark p-3 p-md-5 text-white rounded-0 d-inline-block">
+        <div class="card-body px-0">
+          <h1 class="fst-italic">{{course.course_name}}</h1>{% comment %}
+          {% if request.user.user_type == 1 or request.user.user_type == 2 or request.user.user_type == 5 %}
+          {% if not is_enrolled %}
+          <a href="{% url 'courses:enroll_course' course.slug %}" class="btn btn-info white-text">Enroll Now</a>
+          {% endif %}
+          {% endif %}
+          {% endcomment %}
+          <p class="lead my-3">{{course.course_description}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% include 'footer.html' %}
+{% endblock wrapper %}

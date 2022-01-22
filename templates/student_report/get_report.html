@@ -1,0 +1,61 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container mt-3">
+    {% if msg != None %}
+    <div class="row">
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">
+        <p class="text-center pt-3">{{msg}}</p>
+      </div>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-12">
+        <a class="btn btn-info text-white" href="{% url 'student_report:export_csv'  %}">Export CSV</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <table class="table table-bordered">
+            <tr>
+                <th>Sl. No.</th>
+                {% if request.user.user_type != 3 %}
+                <th>Institute</th>
+                {% endif %}
+                <th>Name</th>
+                <th>Course</th>
+                <th>Admission Date</th>
+                <th>Days Completed till now.</th>
+                <th>Marks in Daily Tests (till {{today}})</th>
+                <th>Assignment Submitions</th>
+                <th>Assignment Total</th>
+                <th>View Student Data</th>
+
+            </tr>
+            {% for enrollment in enrollments %}
+            {% if enrollment.student.user_type == 1 %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              {% if request.user.user_type != 3 %}
+              <td>{{enrollment.college.name}}</td>
+              {% endif %}
+              <td class="text-start">{{enrollment.student.name}}</td>
+              <td class="text-start">{{enrollment.course.course_name}}</td>
+              <td class="text-start">{{enrollment.enrollment_date}}</td>
+              <td class="text-end">{{ enrollment.student.conducttest_set.all.count }}</td>
+              <td class="text-end">{{ enrollment.final_cumulative_marks }}</td>
+              <td class="text-end">{{ enrollment.student.submitassignment_set.all.count }}</td>
+              <td class="text-end">{{ enrollment.assignment_marks }}</td>
+
+              <td><a href="{% url 'student_report:individual_student_report' enrollment.student.username %}" class="btn btn-success rounded rounded-pill">View</a></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+</div>
+
+{% endblock wrapper %}

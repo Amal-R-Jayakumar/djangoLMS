@@ -1,0 +1,31 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <tr>
+                  <th>Sl. No.</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>College/ATC</th>
+                  <th>Enrolled</th>
+                </tr>
+                {% for enrollment in enrollments %}
+                <tr>
+                  {% if enrollment.student.user_type == 1 %}
+                    <td>{{forloop.counter}}</td>
+                    <td>{{enrollment.student.name}}</td>
+                    <td>{{enrollment.student.email}}</td>
+                    <td>College</td>
+                    <td>Yes</td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock wrapper %}

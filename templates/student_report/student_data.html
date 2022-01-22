@@ -1,0 +1,136 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %} {% include 'nav.html' %}
+<style>
+.details-spacing .col,
+.details-spacing .col-1{
+  padding-top:8px;
+  padding-bottom:8px;
+}
+</style>
+<div class="container mt-3">
+  <div class="row mx-1 mt-3 border rounded">
+    <div class=" col-12">
+      <div class="row text-white">
+          <div class="col fs-6 bg-info">
+            <div class="row py-1 d-flex">
+              <div class="col text-start">
+                Student:
+                {{student.name}}
+              </div>
+            </div>
+          </div>
+          <div class="col fs-6 bg-success">
+            <div class="row py-1 ">
+              <div class="col text-start">
+                Email:
+                {{student.email}}
+              </div>
+            </div>
+          </div>
+          <div class="col fs-6">
+            <div class="row py-1 bg-warning">
+              <div class="col text-start">
+                Phone:
+                {{student.contact_number}}
+              </div>
+            </div>
+
+          </div>
+      </div>
+      <div class="row details-spacing justify-content-center">
+          <div class="col-6 col-lg-5">
+            <div class="row">
+              <div class="col">Total Marks in Exams</div>
+              <div class="col"> {{enrollment.final_cumulative_marks}} out of 272</div>
+            </div>
+            <div class="row">
+              <div class="col">Total Marks in Assignment</div>
+              <div class="col">{{assignment_obtained_marks}} out of 244</div>
+            </div>
+            <div class="row">
+                <div class="col">Total Exams Attended</div>
+                <div class="col">{{exams.count}}</div>
+              </div>
+          </div>
+          <div class="col-6 col-lg-5">
+            <div class="row">
+              <div class="col">Assignment Percentage:</div>
+              <div class="col">{{assignment_percentage}}%</div>
+            </div>
+            <div class="row">
+              <div class="col">Exam Percentage:</div>
+              <div class="col">{{exam_percentage}}%</div>
+            </div>
+              
+              <div class="row">
+                <div class="col">Total Assignments Submitted</div>
+                <div class="col">{{submitted_assignments.count}}</div>
+              </div>
+
+          </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row mx-1 fw-bold border my-2 py-4">
+    <p class="text-center my-0">Cumulative Total: {{final_total}} out of 516({{final_total_percentage}}%)</p>
+    <!-- <p class="text-center my-0"><a href="{% url 'student_report:certified' course=course username=student.email %}" class="btn btn-success rounded rounded-pill">Issue Certificate</a></p> -->
+  </div>
+    <div class="row my-3">
+    <div class="col-12 col-md-5">
+      <table class="table table-bordered">
+        <p class="fs-5">Exams</p>
+        <tr>
+          <th class="text-center">Exams Attended</th>
+          <th class="text-center">Marks Obtained</th>
+        </tr>
+        {% for exam in exams %}
+
+        <tr>
+          <td class="text-center">{{exam.session.session}}</td>
+          <td class="text-end">{{ exam.marks }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="col-12 col-md-7">
+      <table class="table table-bordered">
+        <p class="fs-5">Assignments</p>
+        <tr>
+          <th class="text-center">Session</th>
+          <th class="text-center">Assignments Submitted</th>
+          <th class="text-center">Submission Date</th>
+          <th class="text-center">Grade</th>
+          {% if request.user.user_type != 4 %}
+            <th class="text-center"> View</th>
+          {% endif %}
+          
+        </tr>
+
+        {% for submitted_assignment in submitted_assignments %}
+        <tr>
+          <td>{{submitted_assignment.lesson.session.session}}</td>
+          <td>{{submitted_assignment.assignment.assignment_name}}</td>
+          <td class="text-success text-end">{{submitted_assignment.submitted_date.date}}</td>
+          <td>{{submitted_assignment.grade}}</td>
+          {% if request.user.user_type != 4 %}
+            <td><a href="{% url 'student_report:grade_assignment' username=student.username assignment=submitted_assignment.assignment.id %}" class="btn btn-info btn-sm">Grade Assignment</a></td>
+          {% endif %}
+          
+        </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+     <p class="text-end">
+       Download the report as CSV File:
+       <a href="{% url 'student_report:individual_student_report_exams_assignments' student.username %}" class="btn btn-success mx-5">
+         Download
+        </a>
+     </p>
+    </div>
+  </div>
+</div>
+{% endblock wrapper %}

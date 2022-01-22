@@ -1,0 +1,210 @@
+{% extends 'wrapper.html' %} {% load static %} {% block wrapper %}
+{% include 'nav.html' %}
+
+{% if open_days >= lesson.session.session_number %}
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex pt-2 pb-0" href="{% url 'courses:course_detail' course.slug %}">
+      <h4><i class="bi bi-arrow-left pe-2"></i></h4>
+      <h4 class="ps-2">{{lesson.title}}</h4>
+    </a>
+    <ul class="list-unstyled d-flex">
+      <li class='list-item ps-2'>
+        <a href="{% url 'ask_an_expert:q_and_a' %}" class='text-white btn btn-success'>Ask an Expert</a>
+      </li>
+
+      {% if current_session.conducttest_set %}
+      {% if is_enrolled_student and not is_expired %}
+
+      {% if previous == None %}
+        {% if is_improved == None %}
+          <li class='list-item ps-2'>
+            <a href="{% url 'courses:take_test' course_slug=course.slug lesson_slug=lesson.slug %}" class='text-white btn btn-warning'>Take Test</a>
+          </li>
+        {% endif %}
+        {% if is_improved == False %}
+          <li class='list-item ps-2'>
+            <a href="{% url 'courses:take_test' course_slug=course.slug lesson_slug=lesson.slug %}" class='text-white btn btn-warning'>Improve Score</a>
+          </li>
+        {% endif %}
+      {% else %}
+        {% if tests != None and tests.marks >= 2 and tests.is_improved %}
+          {% if assignments_completed %}
+            {% if is_improved == None %}
+              <li class='list-item ps-2'>
+                <a href="{% url 'courses:take_test' course_slug=course.slug lesson_slug=lesson.slug %}" class='text-white btn btn-warning'>Take Test</a>
+              </li>
+            {% endif %}
+            {% if is_improved == False %}
+              <li class='list-item ps-2'>
+                <a href="{% url 'courses:take_test' course_slug=course.slug lesson_slug=lesson.slug %}" class='text-white btn btn-warning'>Improve Score</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+
+      {% endif %}
+      {% endif %}
+
+</ul>
+  </div>
+</nav>
+{% if is_enrolled_student and not is_expired %}
+    {% if previous == None %}
+      <div class="container-fluid pt-0 pb-2 bg-light">
+          <div class="row">
+              <div class="col-sm-9 col-12 p-0 bg-dark">
+
+                <div class="row">
+                  <video class="lesson-video" controlsList="nodownload" oncontextmenu="return false;" width="100%" controls="true"  poster="" id="video">
+                    <!-- autoplay -->
+                    <source type="video/mp4" src="{{lesson.video_url}}"></source>
+                  </video>
+                </div>
+                {% if resource_files %}
+                <div class="row">
+                  <!-- <embed src="{{resource_files}}" style="width:100%;height:600px;" type="application/pdf"></embed> -->
+                  <div oncontextmenu= "return false;" controlsList="nodownload" id="disableRightClick">
+                    <iframe src="{{resource_files}}" width="100%" height="780" allow="autoplay"></iframe>
+                  </div>
+                </div>
+                {% endif %}
+
+            </div>
+            <div class="col-sm-3 p-0">
+                <div class="accordion lesson p-0 bg-dark" id="accordionExample">
+                  <p class="text-white p-0 m-0 text-center">Click on the accordion below</p>
+                  {% for each_session in sessions %}
+                    {% if each_session.is_open %}
+                      <div class="accordion-item border-0 p-0">
+                        <h2 class="accordion-header p-0" id="heading{{each_session.session_number}}">
+                          <button class="accordion-button collapsed text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{each_session.session_number}}" aria-expanded="true" aria-controls="collapse{{each_session.session_number}}" onclick="this.blur();">{{each_session.session}}</button>
+                        </h2>
+                      <div id="collapse{{each_session.session_number}}" class="accordion-collapse collapse bg-secondary" aria-labelledby="heading{{each_session.session_number}}" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                          <ul class="list-group list-group-flush ">
+                              {% for each_lesson in each_session.lesson_set.all %}
+                                  <li class="list-group-item bg-secondary">
+                                    <p class="text-info">Video</p>
+                                    <a class='text-white' href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=each_lesson.slug %}">
+                                      <p>{{each_lesson.title}}</p>
+                                      <ol class="text-white">
+                                        <p class="text-info">Assignments</p>
+                                          {% for each_assignment in each_lesson.assignment_set.all %}
+                                              <li class='list-item ps-2'>
+                                                <a href="{% url 'courses:assignment_detail' course_slug=course.slug lesson_slug=each_lesson.slug id=each_assignment.id %}" class='text-white'>{{each_assignment.assignment_name}} <span style="color:#e0a912;">- click here to submit</span></a>
+                                              </li>
+                                          {% endfor %}
+                                      </ol>
+                                  </a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% if tests != None and tests.marks >= 2 and tests.is_improved and assignments_completed %}
+          <div class="container-fluid pt-0 pb-2 mx-0 px-0">
+          <div class="row">
+              <div class="col-sm-9 col-12 p-0 bg-dark">
+                  <video class="lesson-video" width="100%" controls="true"  poster="" id="video">
+                    <!-- autoplay -->
+                      <source type="video/mp4" src="{{lesson.video_url}}"></source>
+                  </video>
+              </div>
+              <div class="col-sm-3 p-0">
+                  <div class="accordion lesson p-0 bg-dark" id="accordionExample">
+                    <p class="text-white p-0 m-0 text-center">Click on the accordion below</p>
+                  {% for each_session in sessions %}
+                  {% if each_session.is_open %}
+                      <div class="accordion-item border-0 p-0">
+                      <h2 class="accordion-header p-0" id="heading{{each_session.session_number}}">
+                          <button class="accordion-button collapsed text-white bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{each_session.session_number}}" aria-expanded="true" aria-controls="collapse{{each_session.session_number}}" onclick="this.blur();">{{each_session.session}}</button>
+                      </h2>
+                      <div id="collapse{{each_session.session_number}}" class="accordion-collapse collapse bg-secondary" aria-labelledby="heading{{each_session.session_number}}" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                          <ul class="list-group list-group-flush ">
+                              {% for each_lesson in each_session.lesson_set.all %}
+                                  <li class="list-group-item bg-secondary">
+                                    <p class="text-info">Video</p>
+                                      <a class='text-white' href="{% url 'courses:study_lesson' course_slug=course.slug lesson_slug=each_lesson.slug %}">
+                                      <p>{{each_lesson.title}}</p>
+                                      <ol class="text-white">
+                                        <p class="text-info">Assignments</p>
+                                          {% for each_assignment in each_lesson.assignment_set.all %}
+                                              <li class='list-item ps-2'>
+                                                <a href="{% url 'courses:assignment_detail' course_slug=course.slug lesson_slug=each_lesson.slug id=each_assignment.id %}" class='text-white'>{{each_assignment.assignment_name}} <span style="color:#e0a912;">- click here to submit</span></a>
+                                              </li>
+                                          {% endfor %}
+                                      </ol>
+                                      <ol class="text-white">
+                                        {% if each_lesson.conducttest_set %}
+                                          <li class='list-item ps-2'>
+                                            <a href="{% url 'courses:take_test' course_slug=course.slug lesson_slug=each_lesson.slug %}" class='text-white'>Take Test</a>
+                                          </li>
+                                        {% endif %}
+                                      </ol>
+                                  </a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                        </div>
+                      {% endif %}
+                  {% endfor %}
+              </div>
+            </div>
+        </div>
+          </div>
+        {% else %}
+        <div class="container">
+        <div class="row">
+          <div class="col-12 d-flex flex-column justify-content-center">
+            <img src="{% static 'images/access_denied.svg' %}" alt="access denied" class="my-2" style="max-height: 76vh;">
+            <p class="text-center fs-2">
+              Sorry, complete the assignments and tests from the previous Session to access this one.
+            </p>
+          </div>
+        </div>
+        </div>
+        {% endif %}
+      {% endif %}
+
+  {% else %}
+      <div class="container">
+      <div class="row">
+        <div class="col-12 d-flex flex-column justify-content-center">
+          <img src="{% static 'images/access_denied.svg' %}" alt="access denied" class="my-2" style="max-height: 76vh;">
+          <p class="text-center fs-2">
+            Sorry, You are not enrolled in this course. Click on the enroll now button at the courses page to eroll in this courses
+          </p>
+        </div>
+      </div>
+      </div>
+
+
+        {% endif %}
+{% else %}
+<div class="container" style="min-height:80vh;">
+<div class="row d-flex align-items-center">
+  <div class="alert alert-danger" role="alert">
+    <p class="mb-0 text-center">
+      You are not allowed to open this session yet.
+    </p>
+  </div>
+</div>
+</div>
+
+{% endif %}
+{% include 'footer.html' %}
+
+{% endblock wrapper %}
